@@ -1,0 +1,1437 @@
+/* ---------- RESET ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ---------- THEME COLORS ---------- */
+:root {
+  --bg: #3b1a5e;             /* purple base */
+  --bg-deep: #170221;
+  --muted: rgba(255,255,255,0.8);
+  --accent1: #c77dff;        /* purple */
+  --accent2: #6ac8ff;        /* blue  */
+  --glass: rgba(255,255,255,0.04);
+  --border-soft: rgba(255,255,255,0.08);
+  --gradient: linear-gradient(90deg, var(--accent1), var(--accent2));
+  --radius-card: 18px;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- BASE ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Poppins",
+    sans-serif;
+  background:
+    radial-gradient(circle at 10% 0, rgba(255,255,255,0.03), transparent 55%),
+    radial-gradient(circle at 90% 100%, rgba(255,255,255,0.05), transparent 60%),
+    radial-gradient(circle at 30% 80%, rgba(0,0,0,0.4), transparent 60%),
+    linear-gradient(130deg, var(--bg) 0%, var(--bg-deep) 60%, #0b0115 100%);
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* Hover light that follows cursor */
+.cursor-light {
+  position: fixed;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(70px);
+  mix-blend-mode: screen;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+}
+
+/* ---------- SIDEBAR ---------- */
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 230px;
+  background: rgba(5, 0, 15, 0.7);
+  backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  z-index: 20;
+}
+
+.sidebar-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 18px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.menu-close {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 1px;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.nav-links {
+  list-style: none;
+  margin-bottom: 32px;
+}
+
+.nav-links li {
+  margin: 10px 0;
+}
+
+/* 🌈 GRADIENT NAV TEXT */
+.nav-link {
+  display: block;
+  text-decoration: none;
+  font-size: 15px;
+
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  padding: 6px 0;
+  opacity: 0.75;
+  transition: opacity 0.25s, padding-left 0.25s;
+}
+
+.nav-link:hover {
+  opacity: 1;
+  padding-left: 6px;
+}
+
+.nav-link.active {
+  opacity: 1;
+  font-weight: 600;
+}
+
+.btn-sidebar {
+  display: inline-block;
+  margin-bottom: 32px;
+  text-align: center;
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid var(--accent1);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-sidebar:hover {
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(199,125,255,0.6);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.socials a {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.socials a:hover {
+  background: var(--gradient);
+  color: #fff;
+  border-color: transparent;
+}
+
+.coded-by {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+}
+
+/* ---------- NAV-LINK GRADIENT GLOW ON HOVER ONLY ---------- */
+
+.nav-link {
+  position: relative;
+  z-index: 1;
+  padding: 6px 10px; /* shape for the glow */
+  border-radius: 10px; /* rounded glow just like skill pills */
+}
+
+/* Hidden gradient border */
+.nav-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px; /* border thickness */
+  border-radius: inherit;
+  background: var(--gradient);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  /* Hollow border effect – exact same method your cards use */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  z-index: -1;
+}
+
+/* Glow only when hovered */
+.nav-link:hover::before {
+  opacity: 1;
+}
+
+
+/* ---------- TOP BAR ---------- */
+.topbar {
+  position: fixed;
+  left: 230px;
+  right: 0;
+  top: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: linear-gradient(
+      to bottom,
+      rgba(7,0,20,0.9),
+      rgba(7,0,20,0.5),
+      transparent
+    );
+  backdrop-filter: blur(16px);
+  z-index: 15;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.topbar-brand {
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.theme-toggle {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-ghost {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.btn-ghost:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+.btn-topbar {
+  padding: 9px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(199,125,255,0.5);
+  transition: 0.3s;
+}
+
+.btn-topbar:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+/* ---------- MAIN LAYOUT ---------- */
+.main {
+  margin-left: 230px;
+  padding-top: 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.section {
+  padding: 80px 60px;
+  position: relative;
+}
+
+/* Big background text in hero */
+.hero-bg-text {
+  position: absolute;
+  top: 18%;
+  left: 8%;
+  font-size: 80px;
+  letter-spacing: 0.25em;
+  text-transform: lowercase;
+  color: rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-content {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+  gap: 60px;
+  align-items: center;
+}
+
+.hero-kicker {
+  font-size: 16px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 10px;
+}
+
+.hero-title {
+  font-size: clamp(32px, 3.2vw, 44px);
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+/* ---------- GRADIENT TITLES ---------- */
+.gradient-text,
+.section-title,
+.section-subtitle {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Center all section titles */
+.section-title,
+.section-subtitle {
+  text-align: center;
+}
+
+/* But About stays left-aligned */
+#about .section-title,
+#about .section-subtitle {
+  text-align: left !important;
+}
+
+.hero-subtitle {
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 14px;
+}
+
+.hero-body {
+  max-width: 540px;
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 11px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-primary {
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(199,125,255,0.45);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: var(--muted);
+}
+
+.btn-secondary:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+/* Hero photo card */
+.hero-photo-card {
+  position: relative;
+  border-radius: 26px;
+  padding: 12px;
+}
+
+.hero-photo-card img {
+  width: 100%;
+  display: block;
+  border-radius: 20px;
+}
+
+.hero-photo-border {
+  position: absolute;
+  inset: 0;
+  border-radius: 26px;
+  padding: 2px;
+  background: var(--gradient);
+  opacity: 0.6;
+  z-index: -1;
+  filter: blur(0.5px);
+}
+
+.hero-photo-card .hero-photo-caption {
+  position: absolute;
+  inset: auto 18px 18px 18px;
+  background: rgba(7,0,20,0.7);
+  border-radius: 16px;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ---------- HOVER CARD ---------- */
+.hover-card {
+  background: radial-gradient(circle at top left, rgba(255,255,255,0.07), transparent 55%),
+              radial-gradient(circle at bottom right, rgba(0,0,0,0.6), transparent 60%),
+              var(--glass);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+}
+
+.hover-card::before {
+  content: "";
+  position: absolute;
+  inset: -55%;
+  background: conic-gradient(
+    from 180deg,
+    rgba(199,125,255,0.28),
+    rgba(106,200,255,0.28),
+    transparent 60%
+  );
+  filter: blur(32px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.hover-card::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.07), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 55px rgba(0,0,0,0.75);
+  border-color: rgba(255,255,255,0.35);
+}
+
+.hover-card:hover::before,
+.hover-card:hover::after {
+  opacity: 1;
+}
+
+/* ---------- IMAGES NEVER GLOW ---------- */
+.project-card img,
+.cert-card img,
+.hero-photo-card img,
+.about-photo img {
+  pointer-events: none;
+  position: relative;
+  z-index: 3;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.project-card:hover img,
+.cert-card:hover img {
+  transform: scale(1.03);
+  filter: brightness(1.12);
+}
+
+/* ---------- MASKED GLOW FOR PROJECTS & CERTS ---------- */
+.project-card.hover-card::before {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 160px,
+    black 180px
+  );
+}
+
+.cert-card.hover-card::before {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 150px,
+    black 170px
+  );
+}
+
+/* ---------- SECTION HEADERS ---------- */
+.section-header {
+  max-width: 780px;
+  margin: 0 auto 40px;
+  text-align: left;
+}
+
+.section-title {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  color: var(--muted);
+}
+
+
+/* ---------- CAREER GOAL CARDS ---------- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 26px;
+
+  /* Center the entire grid block */
+  max-width: 1100px;
+  margin: 0 auto;
+
+  /* Center the items inside the grid cells */
+  justify-items: center;
+}
+
+
+.info-card {
+  padding: 24px 20px;
+}
+
+.info-card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.info-card p {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.06);
+  margin-bottom: 12px;
+}
+/* ---------- ABOUT ---------- */
+#about .section-header {
+  margin-top: 80px;  
+  margin-bottom: 30px;
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr);
+  gap: 50px;
+  align-items: center;
+}
+
+.about-text p {
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.about-text .btn-primary {
+  margin-top: 10px;
+}
+
+.about-photo {
+  padding: 10px;
+}
+
+.about-photo img {
+  width: 100%;
+  border-radius: 18px;
+  display: block;
+}
+
+/* ---------- SKILLS ---------- */
+.skills-header-pill {
+  margin: 0 auto 30px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.5);
+  width: fit-content;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  font-size: 12px;
+}
+
+.skills-columns {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 18px 40px;
+
+  justify-items: center;
+  justify-content: center;
+
+  width: fit-content;       
+  margin: 0 auto;           
+}
+
+.skills-column {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;   
+  align-items: center;       
+  text-align: center;
+}
+
+
+.skill-pill {
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 13px;
+  color: var(--muted);
+  transition: 0.3s;
+}
+
+.skill-pill.highlight {
+  border-color: var(--accent1);
+}
+
+.skill-pill:hover {
+  background: var(--gradient);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+.skill-pill {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- SKILL PILL SWEEP ANIMATION ---------- */
+.skill-pill::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.25),
+    transparent
+  );
+  animation: sweep 3s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes sweep {
+  0% {
+    left: -120%;
+  }
+  100% {
+    left: 120%;
+  }
+}
+
+/* -------------------------------------------------
+   BUBBLE CLUSTERING EFFECT FOR SKILL PILLS
+--------------------------------------------------- */
+
+.bubble-cluster {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.bubble-cluster .skill-pill {
+  position: relative;
+  animation: clusterFloat 6s ease-in-out infinite;
+}
+
+/* Organic multi-axis drift */
+@keyframes clusterFloat {
+  0%   { transform: translate(0px, 0px); }
+  20%  { transform: translate(4px, -6px); }
+  40%  { transform: translate(-6px, 3px); }
+  60%  { transform: translate(5px, 5px); }
+  80%  { transform: translate(-3px, -4px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+/* Randomize timing so they never sync */
+.bubble-cluster .skill-pill:nth-child(odd) {
+  animation-duration: 7s;
+}
+
+.bubble-cluster .skill-pill:nth-child(3n) {
+  animation-duration: 8s;
+  animation-delay: -1.2s;
+}
+
+.bubble-cluster .skill-pill:nth-child(4n) {
+  animation-duration: 6s;
+  animation-delay: -0.8s;
+}
+
+
+
+/* ---------- PROJECTS ---------- */
+.projects-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(260px, 1fr);
+  gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
+}
+
+.project-card {
+  scroll-snap-align: start;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.project-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.project-body {
+  padding: 16px 16px 18px;
+}
+
+.project-body h3 {
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+
+.project-body p {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-link {
+  font-size: 13px;
+  text-decoration: none;
+  color: var(--accent2);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: 0.25s;
+}
+
+.btn-link:hover {
+  border-color: var(--accent2);
+}
+
+/* ---------- CERTIFICATES ---------- */
+.cert-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(240px, 1fr);
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
+}
+
+.cert-card {
+  scroll-snap-align: start;
+  text-align: left;
+}
+
+.cert-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.cert-card h3 {
+  font-size: 16px;
+  margin: 10px 12px 2px;
+}
+
+.cert-card p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 12px 12px;
+}
+
+/* ---------- EXPERIENCE (TIMELINE) ---------- */
+.timeline {
+  display: grid;
+  gap: 24px;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.timeline-year {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  padding-top: 12px;
+}
+
+.timeline-card {
+  padding: 10px 14px 12px;
+}
+
+.timeline-toggle {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font: inherit;
+  cursor: pointer;
+  padding: 4px 4px 6px;
+}
+
+.timeline-role {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.timeline-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.timeline-arrow {
+  font-size: 12px;
+  transition: transform 0.25s;
+}
+
+.timeline-card.open .timeline-arrow {
+  transform: rotate(180deg);
+}
+
+/* wrapper prevents hover-card mask clipping */
+.timeline-hinge {
+  position: relative;
+  overflow: visible !important;
+  perspective: 1200px;
+}
+
+/* hinge panel (starts folded upward) */
+.timeline-body {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 6px;
+
+  transform-origin: top;
+  transform: rotateX(-90deg);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  transition:
+    transform 0.45s ease,
+    max-height 0.45s ease,
+    opacity 0.35s ease;
+}
+
+/* hinge open state */
+.timeline-card.open .timeline-body {
+  transform: rotateX(0deg);
+  max-height: 500px;
+  opacity: 1;
+}
+
+
+/* ---------- CONTACT ---------- */
+.contact-cta {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.contact-socials {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
+.contact-socials a {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.contact-socials a:hover {
+  background: var(--gradient);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* --------- Button Images (Social Icons) ---------- */
+.contact-socials a img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: invert(1);  /* makes icons white for dark mode */
+  pointer-events: none; /* so clicking the icon still activates the button */
+}
+
+/* Light Mode Icons */
+body.light .contact-socials a img {
+  filter: invert(0); /* switch back to dark icons */
+}
+
+
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+}
+
+.footer span {
+  color: #fff;
+}
+
+/* ---------- UNIVERSAL GRADIENT OUTLINE (APPLIED AUTOMATICALLY) ---------- */
+.gradient-border {
+  position: relative;
+  border-radius: inherit;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1.5px; /* outline thickness */
+  border-radius: inherit;
+  background: var(--gradient);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ------- OUTER GRADIENT BORDER + HOVER HIGHLIGHT (for containers) ------- */
+
+.info-card,
+.hover-card,
+.project-card,
+.cert-card,
+.timeline-card,
+.hero-photo-card,
+.about-photo {
+  position: relative;
+  z-index: 1;
+}
+
+/* Always-visible OUTER border */
+.info-card::before,
+.hover-card::before,
+.project-card::before,
+.cert-card::before,
+.timeline-card::before,
+.hero-photo-card::before,
+.about-photo::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: inherit;
+  background: var(--gradient);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Keep your hover highlight glow */
+.hover-card:hover::after {
+  opacity: 1;
+}
+
+.hover-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.12), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+/* ------- INNER MASKED GRADIENT BORDER (for buttons & pills) ------- */
+
+.skill-pill,
+.skills-header-pill,
+.btn-primary,
+.btn-secondary,
+.btn-topbar,
+.btn-sidebar,
+.btn-ghost {
+  position: relative;
+  z-index: 0;
+}
+
+.skill-pill::after,
+.skills-header-pill::after,
+.btn-primary::after,
+.btn-secondary::after,
+.btn-topbar::after,
+.btn-sidebar::after,
+.btn-ghost::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: var(--gradient);
+  pointer-events: none;
+  z-index: -1;
+
+  /* Creates the hollow border effect */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+
+/* -------------------------------------------------
+   CAROUSEL CONTAINERS
+--------------------------------------------------- */
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 24px;
+  transition: transform 0.4s ease;
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar explicitly */
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   CAROUSEL LAYOUT (4 visible cards)
+============================================ */
+
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+}
+
+.carousel-viewport {
+  overflow: hidden;
+  flex: 1;
+}
+
+.carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(25% - 14px); /* 4 cards visible */
+  gap: 18px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+/* Center cards when fewer than 4 */
+.carousel-track.center-if-few {
+  justify-content: center;
+  grid-auto-columns: unset; /* removes forced 4-card sizing */
+  display: flex;            /* switch to flex so centering works */
+  gap: 18px;
+}
+
+
+/* ================================================
+   CAROUSEL BUTTONS (Gradient + Glow)
+================================================= */
+
+.carousel-btn {
+  position: static; /* places the buttons beside the cards, not on top */
+
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+
+  background: var(--gradient);
+  color: #fff;
+  font-size: 22px;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(199,125,255,0.6);
+
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.carousel-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 28px rgba(199,125,255,0.8);
+}
+
+/* Light mode adjustment */
+body.light .carousel-btn {
+  box-shadow: 0 0 14px rgba(150, 80, 255, 0.5);
+}
+
+
+
+/* ---------- SCROLL ANIMATIONS ---------- */
+.section-observe {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.section-observe.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .menu-close {
+    display: block;
+  }
+
+  .topbar {
+    left: 0;
+    padding-inline: 18px;
+  }
+
+  .main {
+    margin-left: 0;
+  }
+
+  .section {
+    padding: 80px 20px;
+  }
+
+  .hero-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-bg-text {
+    font-size: 46px;
+    left: 6%;
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skills-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .timeline-item {
+    grid-template-columns: 70px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .cards-grid,
+  .skills-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-bg-text {
+    display: none;
+  }
+}
+
+/* ---------- LIGHT MODE OVERRIDES ---------- */
+body.light {
+  --bg: #f4f2ff; /* soft lilac white */
+  --bg-deep: #e6e2ff;
+  --muted: rgba(0,0,0,0.75);
+
+  --glass: rgba(0,0,0,0.05);
+  --border-soft: rgba(0,0,0,0.12);
+
+  background:
+    radial-gradient(circle at 10% 0, rgba(0,0,0,0.05), transparent 55%),
+    radial-gradient(circle at 90% 100%, rgba(0,0,0,0.07), transparent 60%),
+    radial-gradient(circle at 30% 80%, rgba(0,0,0,0.12), transparent 60%),
+    linear-gradient(130deg, var(--bg) 0%, var(--bg-deep) 60%, #fff 100%);
+  color: #111;
+}
+
+/* Light mode for cards */
+body.light .hover-card,
+body.light .info-card,
+body.light .project-card,
+body.light .cert-card,
+body.light .timeline-card,
+body.light .hero-photo-card,
+body.light .about-photo {
+  background: rgba(255,255,255,0.7);
+  border-color: rgba(0,0,0,0.15);
+}
+
+/* Light mode text contrast */
+body.light .section-subtitle,
+body.light .project-body p,
+body.light .cert-card p,
+body.light .timeline-meta,
+body.light .hero-body {
+  color: rgba(0,0,0,0.65);
+}
+
+/* Keep gradient titles visible in both modes */
+body.light .gradient-text,
+body.light .section-title,
+body.light .section-subtitle {
+  color: transparent !important;
+}
+
+body.light .theme-toggle::after {
+  content: "🌙";
+}
+.theme-toggle::after {
+  content: "☀️";
+}
+
+/* ---------------- LIGHT MODE TEXT FIXES ---------------- */
+
+body.light {
+  color: #000; /* global text turns black */
+}
+
+/* Make muted text a darker gray instead of white */
+body.light {
+  --muted: rgba(0, 0, 0, 0.75);
+}
+
+/* Section titles & subtitles */
+body.light .section-title,
+body.light .section-subtitle {
+  color: #000;
+  -webkit-text-fill-color: #000; /* override gradient transparency */
+  background: none;              /* remove gradient text in light mode */
+}
+
+/* Hero text */
+body.light .hero-kicker,
+body.light .hero-title,
+body.light .hero-subtitle,
+body.light .hero-body {
+  color: #000;
+}
+
+/* About text */
+body.light .about-text p {
+  color: #000;
+}
+
+/* Nav links switch to BLACK text (still with gradient hover glow) */
+body.light .nav-link {
+  background: none;
+  -webkit-background-clip: initial;
+  color: #000;
+  opacity: 0.9;
+}
+
+body.light .nav-link:hover {
+  color: #000;
+}
+
+/* Services cards text */
+body.light .info-card h3,
+body.light .info-card p {
+  color: #000;
+}
+
+/* Skill pills text */
+body.light .skill-pill {
+  color: #000;
+}
+
+/* Projects */
+body.light .project-body h3,
+body.light .project-body p {
+  color: #000;
+}
+
+/* Certificates */
+body.light .cert-card h3,
+body.light .cert-card p {
+  color: #000;
+}
+
+/* Timeline */
+body.light .timeline-year,
+body.light .timeline-role,
+body.light .timeline-meta,
+body.light .timeline-body {
+  color: #000;
+}
+
+/* Footer */
+body.light .footer,
+body.light .footer span {
+  color: #000;
+}
+
+/* Contact icons */
+body.light .contact-socials a {
+  color: #000;
+  border-color: rgba(0,0,0,0.3);
+}
+
